@@ -9,7 +9,6 @@ class Functionality {
   bool resultFlag = true;
 
   String calculate() {
-    display = display.replaceAll('x', '*');
     display = operationHandeling(display);
     result = display.interpret().toStringAsFixed(5);
     lastResult = result;
@@ -32,7 +31,17 @@ class Functionality {
         break;
       case "DEL":
         if (display != "0") {
-          display = display.substring(0, display.length - 1);
+          if (display.length >= 4) {
+            if (display.substring(display.length - 4) == "sin(" ||
+                display.substring(display.length - 4) == "cos(" ||
+                display.substring(display.length - 4) == "tan(") {
+              display = display.substring(0, display.length - 4);
+            } else {
+              display = display.substring(0, display.length - 1);
+            }
+          } else {
+            display = display.substring(0, display.length - 1);
+          }
         }
         if (display.isEmpty) {
           display = "0";
@@ -63,6 +72,7 @@ class Functionality {
   }
 
   String operationHandeling(String operation) {
+    operation = operation.replaceAll('x', '*');
     operation = operation.replaceAll('√(', 'sqrt(');
     operation = operation.replaceAll('sin(', 'sin(pi/180*');
     operation = operation.replaceAll('cos(', 'cos(pi/180*');
